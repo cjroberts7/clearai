@@ -1520,10 +1520,6 @@ async function runGeneration() {
       body: JSON.stringify(payload)
     });
     clearTimeout(timeoutId);
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
 
     if (!res.ok) throw new Error('Server error: ' + res.status);
     const data = await res.json();
