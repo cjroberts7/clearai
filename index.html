@@ -2136,7 +2136,7 @@ async function createTeamAssessment() {
   if (btn) { btn.textContent = 'Creating…'; btn.disabled = true; }
 
   try {
-    const res = await fetch('/api/team/create', {
+    const res = await fetch('/api/team-create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -2256,7 +2256,7 @@ async function refreshTeamStatus(token) {
   if (title) safeText(title, 'Checking progress…');
 
   try {
-    const res = await fetch(`/api/team/status?token=${encodeURIComponent(token)}`);
+    const res = await fetch(`/api/team-status?token=${encodeURIComponent(token)}`);
     if (!res.ok) {
       const err = await res.json();
       if (title) safeText(title, 'Assessment not found');
@@ -2337,7 +2337,7 @@ async function generateTeamReport() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 90000);
 
-    const res = await fetch('/api/team/generate', {
+    const res = await fetch('/api/team-generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
@@ -2823,7 +2823,7 @@ async function nextDeptStep() {
   if (btn) { btn.textContent = 'Submitting…'; btn.disabled = true; }
 
   try {
-    const res = await fetch('/api/team/submit', {
+    const res = await fetch('/api/team-submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -2880,7 +2880,7 @@ function handleUrlRouting() {
 
 async function loadDeptAssessment(token) {
   try {
-    const res = await fetch(`/api/team/status?token=dept_lookup_${encodeURIComponent(token)}`);
+    const res = await fetch(`/api/team-status?token=dept_lookup_${encodeURIComponent(token)}`);
   } catch {}
 
   // Show dept assessment directly with token
