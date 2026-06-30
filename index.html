@@ -176,14 +176,26 @@ body {
 .exp-list { display: flex; flex-direction: column; }
 .exp-item {
   display: flex; align-items: flex-start; gap: 10px;
-  padding: 0.7rem 0; border-bottom: 1px solid var(--ink-07);
+  padding: 0.7rem 0.75rem; margin: 0 -0.75rem; border-radius: 8px;
+  border-bottom: 1px solid var(--ink-07); cursor: default;
+  transition: background 0.15s;
 }
 .exp-item:last-child { border-bottom: none; }
+.exp-item:hover, .exp-item:focus-within { background: var(--cream-warm); outline: none; }
 .exp-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
 .exp-dot.hi { background: var(--amber); }
 .exp-dot.med { background: var(--ink-20); }
+.exp-text-wrap { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .exp-text { font-size: 12px; color: var(--ink-50); line-height: 1.55; }
 .exp-text strong { color: var(--ink); font-weight: 500; }
+.exp-reveal {
+  max-height: 0; opacity: 0; overflow: hidden;
+  font-size: 11px; color: var(--amber); line-height: 1.6; font-weight: 500;
+  transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
+}
+.exp-item:hover .exp-reveal, .exp-item:focus-within .exp-reveal {
+  max-height: 60px; opacity: 1; margin-top: 5px;
+}
 
 .bento-photo-2 {
   position: relative; overflow: hidden;
@@ -660,6 +672,37 @@ body {
   .doc-modal-tabs { flex-wrap: wrap; }
 }
 
+/* RISK PREVIEW WIDGET */
+.risk-preview { border-top: 1px solid var(--ink-07); background: var(--cream-mid); }
+.rp-inner { display: grid; grid-template-columns: 1.1fr 1fr; }
+.rp-left {
+  padding: 3rem 2.5rem; border-right: 1px solid var(--ink-07);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.rp-toggle-list {
+  margin-top: 1.5rem; background: #fff; border: 1px solid var(--ink-07);
+  border-radius: var(--radius-card); overflow: hidden;
+}
+.rp-right { padding: 3rem 2.5rem; display: flex; align-items: center; justify-content: center; }
+.rp-score-card {
+  background: #fff; border: 1px solid var(--ink-07); border-radius: var(--radius-card);
+  padding: 2rem; text-align: center; width: 100%; max-width: 320px;
+}
+.rp-score {
+  font-family: 'DM Serif Display', serif;
+  font-size: 48px; color: var(--ink); letter-spacing: -0.03em; line-height: 1;
+}
+.rp-score sup { font-size: 18px; color: var(--ink-35); font-family: 'DM Sans', sans-serif; vertical-align: super; }
+.rp-band { font-size: 13px; font-weight: 500; margin-top: 0.5rem; color: var(--amber-light); transition: color 0.3s ease; }
+.rp-bar-track { height: 4px; background: var(--ink-07); border-radius: 2px; overflow: hidden; margin-top: 1rem; }
+.rp-bar-fill { height: 100%; width: 0%; background: var(--amber-light); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
+.rp-note { font-size: 11px; color: var(--ink-35); line-height: 1.6; margin-top: 1rem; }
+@media (max-width: 680px) {
+  .rp-inner { grid-template-columns: 1fr; }
+  .rp-left { border-right: none; border-bottom: 1px solid var(--ink-07); padding: 2rem 1.5rem; }
+  .rp-right { padding: 2rem 1.5rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
@@ -784,11 +827,41 @@ body {
         <p class="bento-eyebrow">The exposure vectors</p>
         <h2 class="bento-title">What's already happening <em>inside your business</em></h2>
         <div class="exp-list" role="list">
-          <div class="exp-item" role="listitem"><span class="exp-dot hi" aria-hidden="true"></span><span class="exp-text"><strong>Shadow AI in active use</strong> — ChatGPT, Copilot, Gemini used daily by staff without policy, oversight, or IT awareness</span></div>
-          <div class="exp-item" role="listitem"><span class="exp-dot hi" aria-hidden="true"></span><span class="exp-text"><strong>Multiple regulations already apply</strong> — UK GDPR, EU AI Act, FCA and US laws don't wait for you to be ready</span></div>
-          <div class="exp-item" role="listitem"><span class="exp-dot hi" aria-hidden="true"></span><span class="exp-text"><strong>No policy means no defence</strong> — without documentation, every AI-related incident becomes a liability</span></div>
-          <div class="exp-item" role="listitem"><span class="exp-dot med" aria-hidden="true"></span><span class="exp-text"><strong>Client data leaving your control</strong> — fed into third-party AI with no data processing agreement in place</span></div>
-          <div class="exp-item" role="listitem"><span class="exp-dot med" aria-hidden="true"></span><span class="exp-text"><strong>High-risk use cases unmanaged</strong> — AI in hiring, finance, and HR carries specific legal obligations most businesses don't know about</span></div>
+          <div class="exp-item" role="listitem" tabindex="0">
+            <span class="exp-dot hi" aria-hidden="true"></span>
+            <span class="exp-text-wrap">
+              <span class="exp-text"><strong>Shadow AI in active use</strong> — ChatGPT, Copilot, Gemini used daily by staff without policy, oversight, or IT awareness</span>
+              <span class="exp-reveal">On average, businesses use 11+ AI tools — IT knows about fewer than 3 of them.</span>
+            </span>
+          </div>
+          <div class="exp-item" role="listitem" tabindex="0">
+            <span class="exp-dot hi" aria-hidden="true"></span>
+            <span class="exp-text-wrap">
+              <span class="exp-text"><strong>Multiple regulations already apply</strong> — UK GDPR, EU AI Act, FCA and US laws don't wait for you to be ready</span>
+              <span class="exp-reveal">EU AI Act fines reach €35m. UK GDPR fines reach £17.5m. Enforcement has already started.</span>
+            </span>
+          </div>
+          <div class="exp-item" role="listitem" tabindex="0">
+            <span class="exp-dot hi" aria-hidden="true"></span>
+            <span class="exp-text-wrap">
+              <span class="exp-text"><strong>No policy means no defence</strong> — without documentation, every AI-related incident becomes a liability</span>
+              <span class="exp-reveal">78% of businesses have no written AI policy in place today.</span>
+            </span>
+          </div>
+          <div class="exp-item" role="listitem" tabindex="0">
+            <span class="exp-dot med" aria-hidden="true"></span>
+            <span class="exp-text-wrap">
+              <span class="exp-text"><strong>Client data leaving your control</strong> — fed into third-party AI with no data processing agreement in place</span>
+              <span class="exp-reveal">Sharing client data with AI tools, with no agreement in place, may already breach UK GDPR.</span>
+            </span>
+          </div>
+          <div class="exp-item" role="listitem" tabindex="0">
+            <span class="exp-dot med" aria-hidden="true"></span>
+            <span class="exp-text-wrap">
+              <span class="exp-text"><strong>High-risk use cases unmanaged</strong> — AI in hiring, finance, and HR carries specific legal obligations most businesses don't know about</span>
+              <span class="exp-reveal">HR and finance AI use is classed high-risk under the EU AI Act — extra documentation is required.</span>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -817,6 +890,53 @@ body {
           <div class="reg-item" role="listitem">
             <div><div class="reg-name">US state AI laws</div><div class="reg-body">California, Colorado and others — applies if you have US customers</div></div>
             <span class="reg-pill sec">Expanding rapidly</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RISK PREVIEW WIDGET -->
+    <section class="risk-preview" aria-label="Sample risk score calculator">
+      <div class="rp-inner">
+        <div class="rp-left">
+          <p class="bento-eyebrow">Try it yourself</p>
+          <h2 class="bento-title">Watch your risk score <em>build in real time</em></h2>
+          <p class="threat-body">Toggle the factors that apply to your business and watch a sample score build. This is a simplified preview — the full assessment covers regulation, tooling, and governance in much more depth.</p>
+          <div class="rp-toggle-list" role="group" aria-label="Sample risk factors">
+            <div class="cl-row" onclick="rpToggle('eu', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('eu', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">We have customers or operations in the EU</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('shadow', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('shadow', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">Staff use AI tools IT hasn't approved or reviewed</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('nopolicy', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('nopolicy', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">We don't have a written AI acceptable use policy</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('hr', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('hr', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">We use AI in HR — hiring, performance, or monitoring</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('notraining', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('notraining', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">Staff haven't had any AI safety training</span>
+            </div>
+          </div>
+        </div>
+        <div class="rp-right">
+          <div class="rp-score-card">
+            <div class="rp-score" id="rp-score" aria-label="Sample risk score">0<sup>/100</sup></div>
+            <div class="rp-band" id="rp-band">Low Risk</div>
+            <div class="rp-bar-track"><div class="rp-bar-fill" id="rp-bar-fill"></div></div>
+            <button class="hero-btn" style="width:100%;margin-top:1.5rem;" onclick="startAssessment()">Start your full assessment →</button>
+            <p class="rp-note">Illustrative only — your real score depends on many more factors covered in the full 5-minute assessment.</p>
           </div>
         </div>
       </div>
@@ -1748,6 +1868,71 @@ function downloadAll() {
       }
     }, i * 500);
   });
+}
+
+// ═══════════════════════════════════════════════
+// RISK PREVIEW WIDGET (landing page sample score)
+// ═══════════════════════════════════════════════
+const RP_FACTORS = {
+  eu: 20,
+  shadow: 25,
+  nopolicy: 25,
+  hr: 15,
+  notraining: 15
+};
+const rpSelected = new Set();
+let rpDisplayed = 0;
+let rpAnimFrame = null;
+
+function rpToggle(id, row) {
+  if (!Object.prototype.hasOwnProperty.call(RP_FACTORS, id)) return;
+  const box = row.querySelector('.cl-box');
+  if (rpSelected.has(id)) {
+    rpSelected.delete(id);
+    if (box) box.classList.remove('on');
+    row.setAttribute('aria-checked', 'false');
+  } else {
+    rpSelected.add(id);
+    if (box) box.classList.add('on');
+    row.setAttribute('aria-checked', 'true');
+  }
+  rpAnimateTo(Object.keys(RP_FACTORS).reduce((sum, k) => sum + (rpSelected.has(k) ? RP_FACTORS[k] : 0), 0));
+}
+
+function rpAnimateTo(target) {
+  if (rpAnimFrame) cancelAnimationFrame(rpAnimFrame);
+  const start = rpDisplayed;
+  const startTime = performance.now();
+  const duration = 450;
+  function step(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    rpDisplayed = Math.round(start + (target - start) * eased);
+    rpRenderScore(rpDisplayed);
+    if (t < 1) {
+      rpAnimFrame = requestAnimationFrame(step);
+    } else {
+      rpAnimFrame = null;
+    }
+  }
+  rpAnimFrame = requestAnimationFrame(step);
+}
+
+function rpRenderScore(val) {
+  const scoreEl = document.getElementById('rp-score');
+  if (scoreEl) scoreEl.innerHTML = val + '<sup>/100</sup>';
+
+  let band, color;
+  if (val <= 20) { band = 'Low Risk'; color = 'var(--amber-light)'; }
+  else if (val <= 40) { band = 'Moderate Risk'; color = 'var(--warn-amber)'; }
+  else if (val <= 65) { band = 'Moderate-High Risk'; color = 'var(--amber)'; }
+  else { band = 'High Risk'; color = 'var(--warn-red)'; }
+
+  const bandEl = document.getElementById('rp-band');
+  if (bandEl) { safeText(bandEl, band); bandEl.style.color = color; }
+
+  const fill = document.getElementById('rp-bar-fill');
+  if (fill) { fill.style.width = val + '%'; fill.style.background = color; }
 }
 </script>
 </body>
