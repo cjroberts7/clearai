@@ -117,24 +117,39 @@ body {
 }
 .hero-btn:hover { background: var(--amber-light); }
 .hero-note { font-size: 11px; color: var(--ink-35); }
-.hero-right { position: relative; overflow: hidden; background: var(--dark-bg); min-height: 420px; }
-.hero-img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.8; }
+.hero-right {
+  position: relative; overflow: hidden; background: var(--dark-bg);
+  min-height: 460px; padding: 2rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-shadow-bars { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .hero-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to bottom, rgba(26,31,42,0.1) 0%, rgba(26,31,42,0.55) 100%);
 }
-.hero-float {
-  position: absolute; bottom: 1.5rem; right: 1.5rem;
-  background: rgba(253,250,246,0.95);
-  border-radius: var(--radius-card); padding: 1rem 1.25rem;
-  border: 1px solid var(--ink-07); min-width: 155px;
+.hero-widget-card {
+  position: relative; z-index: 1; width: 100%; max-width: 360px;
+  background: rgba(253,250,246,0.97); border-radius: var(--radius-card);
+  padding: 1.5rem 1.5rem 1.25rem; border: 1px solid var(--ink-07);
 }
-.hf-num {
+.hero-widget-eyebrow {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-35); margin-bottom: 0.6rem;
+}
+.hero-widget-title {
   font-family: 'DM Serif Display', serif;
-  font-size: 32px; color: var(--ink); line-height: 1; letter-spacing: -0.02em;
+  font-size: 17px; color: var(--ink); line-height: 1.3;
+  letter-spacing: -0.01em; margin-bottom: 1rem;
 }
-.hf-num em { color: var(--amber); font-style: normal; font-size: 18px; }
-.hf-label { font-size: 10px; color: var(--ink-35); margin-top: 4px; line-height: 1.4; }
+.hero-widget-title em { color: var(--amber); font-style: italic; }
+.hero-widget-toggles {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--ink-07); border-radius: var(--radius-sm);
+  overflow: hidden; margin-bottom: 1rem;
+}
+.hero-widget-toggles .cl-row { padding: 8px 12px; }
+.hero-widget-toggles .cl-text { font-size: 11px; line-height: 1.35; }
+.hero-widget-result { text-align: center; margin-bottom: 1rem; }
 
 /* STAT STRIP */
 .stat-strip {
@@ -657,7 +672,7 @@ body {
 }
 @media (max-width: 680px) {
   .hero { grid-template-columns: 1fr; }
-  .hero-right { min-height: 240px; }
+  .hero-right { min-height: auto; padding: 2rem 1.25rem; }
   .stat-strip { grid-template-columns: 1fr; }
   .bento { grid-template-columns: 1fr; }
   .bento-photo, .bento-photo-2 { min-height: 200px; border-right: none; }
@@ -672,36 +687,16 @@ body {
   .doc-modal-tabs { flex-wrap: wrap; }
 }
 
-/* RISK PREVIEW WIDGET */
-.risk-preview { border-top: 1px solid var(--ink-07); background: var(--cream-mid); }
-.rp-inner { display: grid; grid-template-columns: 1.1fr 1fr; }
-.rp-left {
-  padding: 3rem 2.5rem; border-right: 1px solid var(--ink-07);
-  display: flex; flex-direction: column; justify-content: center;
-}
-.rp-toggle-list {
-  margin-top: 1.5rem; background: #fff; border: 1px solid var(--ink-07);
-  border-radius: var(--radius-card); overflow: hidden;
-}
-.rp-right { padding: 3rem 2.5rem; display: flex; align-items: center; justify-content: center; }
-.rp-score-card {
-  background: #fff; border: 1px solid var(--ink-07); border-radius: var(--radius-card);
-  padding: 2rem; text-align: center; width: 100%; max-width: 320px;
-}
+/* RISK PREVIEW WIDGET (now embedded in hero-right) */
 .rp-score {
   font-family: 'DM Serif Display', serif;
-  font-size: 48px; color: var(--ink); letter-spacing: -0.03em; line-height: 1;
+  font-size: 38px; color: var(--ink); letter-spacing: -0.03em; line-height: 1;
 }
-.rp-score sup { font-size: 18px; color: var(--ink-35); font-family: 'DM Sans', sans-serif; vertical-align: super; }
-.rp-band { font-size: 13px; font-weight: 500; margin-top: 0.5rem; color: var(--amber-light); transition: color 0.3s ease; }
-.rp-bar-track { height: 4px; background: var(--ink-07); border-radius: 2px; overflow: hidden; margin-top: 1rem; }
+.rp-score sup { font-size: 15px; color: var(--ink-35); font-family: 'DM Sans', sans-serif; vertical-align: super; }
+.rp-band { font-size: 13px; font-weight: 500; margin-top: 0.4rem; color: var(--amber-light); transition: color 0.3s ease; }
+.rp-bar-track { height: 4px; background: var(--ink-07); border-radius: 2px; overflow: hidden; margin-top: 0.75rem; }
 .rp-bar-fill { height: 100%; width: 0%; background: var(--amber-light); border-radius: 2px; transition: width 0.3s ease, background 0.3s ease; }
-.rp-note { font-size: 11px; color: var(--ink-35); line-height: 1.6; margin-top: 1rem; }
-@media (max-width: 680px) {
-  .rp-inner { grid-template-columns: 1fr; }
-  .rp-left { border-right: none; border-bottom: 1px solid var(--ink-07); padding: 2rem 1.5rem; }
-  .rp-right { padding: 2rem 1.5rem; }
-}
+.rp-note { font-size: 10px; color: var(--ink-35); line-height: 1.5; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
@@ -744,16 +739,46 @@ body {
           <span class="hero-note">5 min · no account needed</span>
         </div>
       </div>
-      <div class="hero-right" aria-hidden="true">
-        <img class="hero-img"
-          src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&q=85"
-          alt="Server room — rows of network infrastructure with no people"
-          loading="eager"
-          onerror="this.parentElement.style.background='#1A1F2A'">
-        <div class="hero-overlay"></div>
-        <div class="hero-float" aria-label="78% of businesses have no written AI policy">
-          <div class="hf-num">78<em>%</em></div>
-          <div class="hf-label">of businesses have<br>no written AI policy</div>
+      <div class="hero-right" aria-label="Try a sample risk score">
+        <canvas class="hero-shadow-bars" id="hero-shadow-bars" aria-hidden="true"></canvas>
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-widget-card">
+          <p class="hero-widget-eyebrow">Try it yourself</p>
+          <h2 class="hero-widget-title">Watch your risk score <em>build in real time</em></h2>
+          <div class="hero-widget-toggles" role="group" aria-label="Sample risk factors">
+            <div class="cl-row" onclick="rpToggle('eu', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('eu', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">We have customers or operations in the EU</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('shadow', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('shadow', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">Staff use AI tools IT hasn't approved or reviewed</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('nopolicy', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('nopolicy', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">We don't have a written AI acceptable use policy</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('hr', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('hr', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">We use AI in HR — hiring, performance, or monitoring</span>
+            </div>
+            <div class="cl-row" onclick="rpToggle('notraining', this)" role="checkbox" aria-checked="false" tabindex="0"
+              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('notraining', this)}">
+              <div class="cl-box" aria-hidden="true"></div>
+              <span class="cl-text">Staff haven't had any AI safety training</span>
+            </div>
+          </div>
+          <div class="hero-widget-result">
+            <div class="rp-score" id="rp-score" aria-label="Sample risk score">0<sup>/100</sup></div>
+            <div class="rp-band" id="rp-band">Low Risk</div>
+            <div class="rp-bar-track"><div class="rp-bar-fill" id="rp-bar-fill"></div></div>
+          </div>
+          <button class="hero-btn" style="width:100%;" onclick="startAssessment()">Start your full assessment →</button>
+          <p class="rp-note" style="text-align:center;margin-top:0.75rem;">Illustrative only — your real score depends on many more factors.</p>
         </div>
       </div>
     </section>
@@ -890,53 +915,6 @@ body {
           <div class="reg-item" role="listitem">
             <div><div class="reg-name">US state AI laws</div><div class="reg-body">California, Colorado and others — applies if you have US customers</div></div>
             <span class="reg-pill sec">Expanding rapidly</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RISK PREVIEW WIDGET -->
-    <section class="risk-preview" aria-label="Sample risk score calculator">
-      <div class="rp-inner">
-        <div class="rp-left">
-          <p class="bento-eyebrow">Try it yourself</p>
-          <h2 class="bento-title">Watch your risk score <em>build in real time</em></h2>
-          <p class="threat-body">Toggle the factors that apply to your business and watch a sample score build. This is a simplified preview — the full assessment covers regulation, tooling, and governance in much more depth.</p>
-          <div class="rp-toggle-list" role="group" aria-label="Sample risk factors">
-            <div class="cl-row" onclick="rpToggle('eu', this)" role="checkbox" aria-checked="false" tabindex="0"
-              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('eu', this)}">
-              <div class="cl-box" aria-hidden="true"></div>
-              <span class="cl-text">We have customers or operations in the EU</span>
-            </div>
-            <div class="cl-row" onclick="rpToggle('shadow', this)" role="checkbox" aria-checked="false" tabindex="0"
-              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('shadow', this)}">
-              <div class="cl-box" aria-hidden="true"></div>
-              <span class="cl-text">Staff use AI tools IT hasn't approved or reviewed</span>
-            </div>
-            <div class="cl-row" onclick="rpToggle('nopolicy', this)" role="checkbox" aria-checked="false" tabindex="0"
-              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('nopolicy', this)}">
-              <div class="cl-box" aria-hidden="true"></div>
-              <span class="cl-text">We don't have a written AI acceptable use policy</span>
-            </div>
-            <div class="cl-row" onclick="rpToggle('hr', this)" role="checkbox" aria-checked="false" tabindex="0"
-              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('hr', this)}">
-              <div class="cl-box" aria-hidden="true"></div>
-              <span class="cl-text">We use AI in HR — hiring, performance, or monitoring</span>
-            </div>
-            <div class="cl-row" onclick="rpToggle('notraining', this)" role="checkbox" aria-checked="false" tabindex="0"
-              onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rpToggle('notraining', this)}">
-              <div class="cl-box" aria-hidden="true"></div>
-              <span class="cl-text">Staff haven't had any AI safety training</span>
-            </div>
-          </div>
-        </div>
-        <div class="rp-right">
-          <div class="rp-score-card">
-            <div class="rp-score" id="rp-score" aria-label="Sample risk score">0<sup>/100</sup></div>
-            <div class="rp-band" id="rp-band">Low Risk</div>
-            <div class="rp-bar-track"><div class="rp-bar-fill" id="rp-bar-fill"></div></div>
-            <button class="hero-btn" style="width:100%;margin-top:1.5rem;" onclick="startAssessment()">Start your full assessment →</button>
-            <p class="rp-note">Illustrative only — your real score depends on many more factors covered in the full 5-minute assessment.</p>
           </div>
         </div>
       </div>
@@ -1144,6 +1122,100 @@ function sanitise(str) {
 function safeText(el, text) {
   if (el) el.textContent = typeof text === 'string' ? text.slice(0, 1000) : '';
 }
+
+// ═══════════════════════════════════════════════
+// HERO SHADOW BARS — ambient canvas background
+// ═══════════════════════════════════════════════
+(function initShadowBars() {
+  const canvas = document.getElementById('hero-shadow-bars');
+  if (!canvas || !canvas.getContext) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const COLUMNS = 6;
+  const BAND = 6;
+  const TIME_SPEED = 0.00035;
+  const Y_SCALE = 0.01;
+  const COL_JITTER = 1.7;
+  const baseColor = [26, 31, 42];        // var(--dark-bg)
+  const proximityColor = [196, 131, 42]; // var(--amber)
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function hash2(x, y) {
+    const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+    return s - Math.floor(s);
+  }
+  function noise2D(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y);
+    const xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const a = hash2(xi, yi), b = hash2(xi + 1, yi);
+    const c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+
+  let width = 0, height = 0;
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = Math.max(1, Math.round(rect.width));
+    height = Math.max(1, Math.round(rect.height));
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function drawFrame(t) {
+    if (!width || !height) resize();
+    const colWidth = width / COLUMNS;
+    for (let i = 0; i < COLUMNS; i++) {
+      const x = i * colWidth;
+      for (let y = 0; y < height; y += BAND) {
+        const n = noise2D(i * COL_JITTER + t * TIME_SPEED, y * Y_SCALE + t * TIME_SPEED * 0.5);
+        const mix = Math.max(0, Math.min(1, (n - 0.5) * 1.8 + 0.5));
+        const r = baseColor[0] + (proximityColor[0] - baseColor[0]) * mix * 0.55;
+        const g = baseColor[1] + (proximityColor[1] - baseColor[1]) * mix * 0.55;
+        const b = baseColor[2] + (proximityColor[2] - baseColor[2]) * mix * 0.55;
+        ctx.fillStyle = 'rgb(' + (r | 0) + ',' + (g | 0) + ',' + (b | 0) + ')';
+        ctx.fillRect(x, y, colWidth + 0.5, BAND + 0.5);
+      }
+    }
+  }
+
+  let rafId = null;
+  let lastFrameTime = 0;
+  const FRAME_INTERVAL = 1000 / 30;
+
+  function loop(now) {
+    rafId = requestAnimationFrame(loop);
+    if (now - lastFrameTime < FRAME_INTERVAL) return;
+    lastFrameTime = now;
+    drawFrame(now);
+  }
+
+  resize();
+  drawFrame(0);
+
+  if (!reduceMotion) {
+    rafId = requestAnimationFrame(loop);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+      } else if (!rafId) {
+        rafId = requestAnimationFrame(loop);
+      }
+    });
+  }
+
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => { resize(); drawFrame(performance.now()); }, 150);
+  });
+})();
 
 // ═══════════════════════════════════════════════
 // STATE
