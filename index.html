@@ -1137,9 +1137,26 @@ function safeText(el, text) {
   const TIME_SPEED = 0.00035;
   const Y_SCALE = 0.01;
   const COL_JITTER = 1.7;
+  const PROXIMITY_STRENGTH = 0.65;
+  const PROXIMITY_EASE = 0.12;
+  const POINTER_EASE = 0.18;
   const baseColor = [26, 31, 42];        // var(--dark-bg)
   const proximityColor = [196, 131, 42]; // var(--amber)
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let pointerX = null, pointerY = null;
+  let targetX = null, targetY = null;
+  let proximity = 0, proximityTarget = 0;
+
+  const hoverZone = canvas.parentElement;
+  hoverZone.addEventListener('mousemove', (e) => {
+    if (reduceMotion) return;
+    const rect = hoverZone.getBoundingClientRect();
+    targetX = e.clientX - rect.left;
+    targetY = e.clientY - rect.top;
+    proximityTarget = 1;
+  });
+  hoverZone.addEventListener('mouseleave', () => { proximityTarget = 0; });
 
   function hash2(x, y) {
     const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
@@ -1169,18 +1186,41 @@ function safeText(el, text) {
 
   function drawFrame(t) {
     if (!width || !height) resize();
+
+    proximity += (proximityTarget - proximity) * PROXIMITY_EASE;
+    if (targetX !== null) {
+      pointerX = pointerX === null ? targetX : pointerX + (targetX - pointerX) * POINTER_EASE;
+      pointerY = pointerY === null ? targetY : pointerY + (targetY - pointerY) * POINTER_EASE;
+    }
+
+    const glowRadius = Math.max(width, height) * 0.4;
     const colWidth = width / COLUMNS;
     for (let i = 0; i < COLUMNS; i++) {
       const x = i * colWidth;
       for (let y = 0; y < height; y += BAND) {
         const n = noise2D(i * COL_JITTER + t * TIME_SPEED, y * Y_SCALE + t * TIME_SPEED * 0.5);
-        const mix = Math.max(0, Math.min(1, (n - 0.5) * 1.8 + 0.5));
+        let prox = 0;
+        if (proximity > 0.001 && pointerX !== null) {
+          const dx = (x + colWidth / 2) - pointerX;
+          const dy = (y + BAND / 2) - pointerY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          prox = Math.max(0, 1 - dist / glowRadius) * proximity;
+        }
+        const mix = Math.max(0, Math.min(1, (n - 0.5) * 1.8 + 0.5 + prox * PROXIMITY_STRENGTH));
         const r = baseColor[0] + (proximityColor[0] - baseColor[0]) * mix * 0.55;
         const g = baseColor[1] + (proximityColor[1] - baseColor[1]) * mix * 0.55;
         const b = baseColor[2] + (proximityColor[2] - baseColor[2]) * mix * 0.55;
         ctx.fillStyle = 'rgb(' + (r | 0) + ',' + (g | 0) + ',' + (b | 0) + ')';
         ctx.fillRect(x, y, colWidth + 0.5, BAND + 0.5);
       }
+    }
+
+    if (proximity > 0.01 && pointerX !== null) {
+      const grad = ctx.createRadialGradient(pointerX, pointerY, 0, pointerX, pointerY, glowRadius * 0.6);
+      grad.addColorStop(0, 'rgba(212,146,58,' + (0.16 * proximity).toFixed(3) + ')');
+      grad.addColorStop(1, 'rgba(212,146,58,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
     }
   }
 
